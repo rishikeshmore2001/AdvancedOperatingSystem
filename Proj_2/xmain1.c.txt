@@ -1,0 +1,40 @@
+// Bar is 100 times and foo is 100 times
+#include <stdio.h>
+#include "proc.h"  // Ensure correct header inclusion
+
+xthread_event_t test_event;  // Declare the event
+int xidfoo, xidbar;
+int x = 0;
+
+/* Function for Thread 1 (Prints "This is foo" 100 times) */
+int foo(int f) {
+    xthread_wait_ev(&test_event);
+    for (int i = 0; i < 10; i++) {
+        printf("This is foo\n");
+    }
+    return 0;
+}
+
+/* Function for Thread 2 (Prints "This is bar" 100 times) */
+int bar(int p, int q) {
+    for (int i = 0; i < 50; i++) {
+        printf("This is bar\n");
+    }
+    xthread_set_ev(&test_event)
+    return 0;
+}
+
+/* Main Thread Function */
+int xmain(int argc, char *argv[]) {
+    init_signal_handling();  // Ensure signal handling is set up
+    enable_timer();          // Start the timer
+
+    xthread_init_ev(&test_event);  // Initialize event
+
+    xidfoo = xthread_create(foo, 1, 7);
+    xidbar = xthread_create(bar, 2, 32, 12);
+
+    xthread_yield(xidfoo);  // Start foo first
+    xthread_yield(xidbar);  // Start bar after foo finishes
+    return 0;
+}
