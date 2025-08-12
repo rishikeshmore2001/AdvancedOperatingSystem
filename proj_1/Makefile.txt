@@ -1,0 +1,32 @@
+CC = gcc
+CFLAGS = -Wall -pthread
+OBJS = crt.o ep.o et.o mm_thr.o timing.o
+
+all: pcrt tcrt mm_thr
+
+pcrt: crt.o ep.o timing.o
+        $(CC) $(CFLAGS) -o pcrt crt.o ep.o timing.o
+
+tcrt: crt.o et.o timing.o
+        $(CC) $(CFLAGS) -o tcrt crt.o et.o timing.o
+
+mm_thr: mm_thr.o timing.o
+        $(CC) $(CFLAGS) -o mm_thr mm_thr.o timing.o
+
+crt.o: crt.c
+        $(CC) $(CFLAGS) -c crt.c
+
+ep.o: ep.c
+        $(CC) $(CFLAGS) -c ep.c
+
+et.o: et.c
+        $(CC) $(CFLAGS) -c et.c
+
+mm_thr.o: mm_thr.c
+        $(CC) $(CFLAGS) -c mm_thr.c
+
+timing.o: timing.c
+        $(CC) $(CFLAGS) -c timing.c
+
+clean:
+        rm -f *.o pcrt tcrt mm_thr
